@@ -1,10 +1,9 @@
 import React from 'react';
-import {View, Text} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Home from './components/screens/Home';
-import MyCart from './components/screens/MyCart';
-import ProductInfo from './components/screens/ProductInfo';
+import Home from './Modules/screens/Home';
+import MyCart from './Modules/screens/MyCart';
+import ProductInfo from './Modules/screens/ProductInfo';
 
 const App = () => {
   const Stack = createNativeStackNavigator();

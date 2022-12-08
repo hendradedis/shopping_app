@@ -10,10 +10,16 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {COLOURS, Items} from '../database/Database';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {currencyFormat} from '../utils/common';
 
 const MyCart = ({navigation}) => {
   const [product, setProduct] = useState();
-  const [total, setTotal] = useState(null);
+  const [total, setTotal] = useState(0);
+  const totalShippingTax = total / 20;
+  const totalTaxCurerency = currencyFormat(totalShippingTax);
+  const subTotal = total + total / 20;
+  const subTotalCurrency = currencyFormat(subTotal);
+  const totals = currencyFormat(total);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -86,6 +92,9 @@ const MyCart = ({navigation}) => {
   };
 
   const renderProducts = (data, index) => {
+    const dataPrice = data.productPrice + data.productPrice / 20;
+    const dataPriceCurrency = currencyFormat(dataPrice);
+    // const totalAfterTax =
     return (
       <TouchableOpacity
         key={data.key}
@@ -148,12 +157,9 @@ const MyCart = ({navigation}) => {
                   maxWidth: '85%',
                   marginRight: 4,
                 }}>
-                &#8377;{data.productPrice}
+                {currencyFormat(data.productPrice)}
               </Text>
-              <Text>
-                (~&#8377;
-                {data.productPrice + data.productPrice / 20})
-              </Text>
+              <Text>(Rp {dataPriceCurrency})</Text>
             </View>
           </View>
           <View
@@ -463,7 +469,7 @@ const MyCart = ({navigation}) => {
                   color: COLOURS.black,
                   opacity: 0.8,
                 }}>
-                &#8377;{total}.00
+                Rp {totals}
               </Text>
             </View>
             <View
@@ -490,7 +496,7 @@ const MyCart = ({navigation}) => {
                   color: COLOURS.black,
                   opacity: 0.8,
                 }}>
-                &#8377;{total / 20}
+                Rp {totalTaxCurerency}
               </Text>
             </View>
             <View
@@ -515,7 +521,7 @@ const MyCart = ({navigation}) => {
                   fontWeight: '500',
                   color: COLOURS.black,
                 }}>
-                &#8377;{total + total / 20}
+                {subTotalCurrency}
               </Text>
             </View>
           </View>
@@ -549,7 +555,7 @@ const MyCart = ({navigation}) => {
               color: COLOURS.white,
               textTransform: 'uppercase',
             }}>
-            CHECKOUT (&#8377;{total + total / 20} )
+            CHECKOUT ( Rp {subTotalCurrency} )
           </Text>
         </TouchableOpacity>
       </View>
